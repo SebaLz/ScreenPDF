@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Image Crop &amp; Edit Modal - ScreenPDF</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ef4444",
+                        "primary-dark": "#991b1b",
+                        "background-light": "#fef2f2",
+                        "background-dark": "#0f0101",
+                        "surface": "#1a0a0a"
+                    },
+                    fontFamily: {
+                        "display": ["Manrope", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "1rem",
+                        "lg": "2rem",
+                        "xl": "3rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style type="text/tailwindcss">
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        .crop-grid {
+            background-image: 
+                linear-gradient(to right, rgba(239, 68, 68, 0.15) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(239, 68, 68, 0.15) 1px, transparent 1px);
+            background-size: 33.33% 33.33%;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #ef4444;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 antialiased h-screen overflow-hidden">
+<div class="fixed inset-0 bg-black/90 backdrop-blur-md z-50 flex items-center justify-center p-4 @container">
+<div class="bg-surface border border-red-500/10 w-full max-w-5xl h-full max-h-[90vh] flex flex-col overflow-hidden shadow-[0_0_50px_rgba(0,0,0,0.5)] rounded-xl">
+<div class="flex items-center justify-between px-6 py-4 border-b border-red-500/10 bg-surface/50 backdrop-blur-md">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary font-bold">edit_square</span>
+<h2 class="text-xl font-bold tracking-tight text-white">Edit Image</h2>
+<span class="ml-4 px-2 py-0.5 rounded-full bg-red-500/10 text-[10px] uppercase tracking-widest text-primary border border-primary/20">Local Processing</span>
+</div>
+<button class="hover:bg-red-500/10 p-2 rounded-full transition-colors text-white/60 hover:text-primary">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<div class="flex flex-wrap items-center justify-between gap-4 px-6 py-3 bg-[#120505] border-b border-red-500/5">
+<div class="flex items-center gap-1">
+<button class="flex items-center gap-2 px-4 py-2 hover:bg-red-500/10 rounded-full text-sm font-medium transition-colors text-white/80 hover:text-primary">
+<span class="material-symbols-outlined text-primary">rotate_90_degrees_cw</span>
+<span>Rotate 90°</span>
+</button>
+<button class="p-2 hover:bg-red-500/10 rounded-full transition-colors text-white/40 hover:text-primary" title="Flip Horizontal">
+<span class="material-symbols-outlined">flip</span>
+</button>
+</div>
+<div class="flex bg-black/40 p-1 rounded-full border border-red-500/10">
+<label class="flex cursor-pointer h-9 items-center justify-center overflow-hidden rounded-full px-4 has-[:checked]:bg-primary has-[:checked]:text-white text-white/40 text-sm font-semibold transition-all hover:text-white/70">
+<span>Free</span>
+<input checked="" class="hidden" name="aspect" type="radio" value="free"/>
+</label>
+<label class="flex cursor-pointer h-9 items-center justify-center overflow-hidden rounded-full px-4 has-[:checked]:bg-primary has-[:checked]:text-white text-white/40 text-sm font-semibold transition-all hover:text-white/70">
+<span>1:1</span>
+<input class="hidden" name="aspect" type="radio" value="1:1"/>
+</label>
+<label class="flex cursor-pointer h-9 items-center justify-center overflow-hidden rounded-full px-4 has-[:checked]:bg-primary has-[:checked]:text-white text-white/40 text-sm font-semibold transition-all hover:text-white/70">
+<span>4:3</span>
+<input class="hidden" name="aspect" type="radio" value="4:3"/>
+</label>
+<label class="flex cursor-pointer h-9 items-center justify-center overflow-hidden rounded-full px-4 has-[:checked]:bg-primary has-[:checked]:text-white text-white/40 text-sm font-semibold transition-all hover:text-white/70">
+<span>16:9</span>
+<input class="hidden" name="aspect" type="radio" value="16:9"/>
+</label>
+<label class="flex cursor-pointer h-9 items-center justify-center overflow-hidden rounded-full px-4 has-[:checked]:bg-primary has-[:checked]:text-white text-white/40 text-sm font-semibold transition-all hover:text-white/70">
+<span class="material-symbols-outlined text-sm mr-1">description</span>
+<span>A4</span>
+<input class="hidden" name="aspect" type="radio" value="A4"/>
+</label>
+</div>
+<div class="flex items-center gap-3 min-w-[200px]">
+<span class="material-symbols-outlined text-primary/40 text-sm">zoom_out</span>
+<div class="flex h-1.5 flex-1 rounded-full bg-white/5 relative">
+<div class="h-full w-[45%] rounded-full bg-primary"></div>
+<div class="absolute left-[45%] -top-1.5 size-4 rounded-full bg-primary ring-4 ring-primary/20 shadow-lg shadow-primary/40 cursor-pointer"></div>
+</div>
+<span class="material-symbols-outlined text-primary/40 text-sm">zoom_in</span>
+<span class="text-xs font-mono text-white/60 min-w-[3ch]">145%</span>
+</div>
+</div>
+<div class="flex-1 bg-black relative flex items-center justify-center overflow-hidden group">
+<div class="relative w-4/5 aspect-[4/3] max-h-full">
+<div class="absolute inset-0 bg-center bg-no-repeat bg-cover opacity-20 blur-sm scale-110" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBzG1nyq6j-O80HC2r9zgvMrPnXYQq2cwSnP2HikdddIpSs28du1emG-rgUqCy32SubLq8aUBPP2qo-W0n5ZX54MimlnLrT7-aqASBPcwjoXGADl9oURJIikf9WyLIuhZ5HWJMWUYwmhBTFX9leq1qAuB6yBs_thG7I5q7s76x6unGYR9aT1dOyT803IUNXiRflZo-urDRrHdXM3xnJ2oPtWk3Z4v6V3Xjcms0ws-UbRXeSxr0Snv_o6padojxnIgjZjqQPhOnjyLK_');">
+</div>
+<div class="absolute inset-8 border-2 border-primary/40 overflow-hidden shadow-[0_0_0_2000px_rgba(0,0,0,0.7)] z-10">
+<div class="w-full h-full bg-center bg-no-repeat bg-cover crop-grid" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuA7KQz96Z4F2t6ngDbT1EKuFDFcGMjYVJLPzMbTCGLVZonJZsSwethqV9v37LcTgpMgLKTNqEc6vAiBH5UGPCd6a76GLzS8kBXzSVMiVIhlzxtbW-QHMVGBv7aghfogjcpmapRfx1HoptN8DzBmycCkHJo5wwx6JJ01kIeB5PYjBVL-kOXyzy-Zu6mCvpMlavCy19vrhM6IlS-DVvx14ok5OrPhWY4BrfKmB9ZzdeV2-7zJAdzCZrKCMl2FqgYNoBoXyPcjHwaluM6r');">
+</div>
+<div class="absolute top-0 left-0 w-6 h-6 border-t-4 border-l-4 border-primary -translate-x-1 -translate-y-1"></div>
+<div class="absolute top-0 right-0 w-6 h-6 border-t-4 border-r-4 border-primary translate-x-1 -translate-y-1"></div>
+<div class="absolute bottom-0 left-0 w-6 h-6 border-b-4 border-l-4 border-primary -translate-x-1 translate-y-1"></div>
+<div class="absolute bottom-0 right-0 w-6 h-6 border-b-4 border-r-4 border-primary translate-x-1 translate-y-1"></div>
+</div>
+</div>
+<div class="absolute bottom-6 left-1/2 -translate-x-1/2 px-4 py-2 bg-black/80 text-white/70 text-xs rounded-full border border-red-500/20 flex items-center gap-3 backdrop-blur-sm">
+<span class="flex items-center gap-1"><kbd class="bg-red-500/10 px-1.5 py-0.5 rounded border border-red-500/20 text-primary">R</kbd> Rotate</span>
+<span class="w-px h-3 bg-white/20"></span>
+<span class="flex items-center gap-1"><kbd class="bg-red-500/10 px-1.5 py-0.5 rounded border border-red-500/20 text-primary">Enter</kbd> Apply</span>
+</div>
+</div>
+<div class="px-8 py-5 border-t border-red-500/10 bg-surface/90 flex items-center justify-between">
+<div class="text-sm text-white/40">
+<span class="font-medium text-white/60">Selected Area:</span>
+<span class="text-primary/80">1240 x 1754 px</span>
+</div>
+<div class="flex items-center gap-4">
+<button class="px-6 py-2.5 text-sm font-semibold text-white/60 hover:text-white transition-colors">
+                    Cancel
+                </button>
+<button class="px-8 py-2.5 bg-primary text-white font-bold rounded-full hover:bg-primary-dark hover:scale-105 active:scale-95 transition-all shadow-lg shadow-primary/30 flex items-center gap-2">
+<span>Apply Edits</span>
+<span class="material-symbols-outlined text-[20px] fill-1">check_circle</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+
+</body></html>
