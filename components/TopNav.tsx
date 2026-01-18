@@ -55,7 +55,7 @@ export const TopNav = () => {
           
           <div className="flex items-center gap-1">
             <Link 
-              href="https://github.com/SebaLz/" 
+              href="https://github.com/SebaLz/ScreenPDF" 
               target="_blank" 
               className="p-2 text-charcoal-400 hover:text-primary transition-colors"
               title="GitHub"
