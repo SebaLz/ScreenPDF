@@ -1,15 +1,15 @@
-import * as pdfjs from 'pdfjs-dist';
 import { SplitPdfPage } from '@/types';
 import { v4 as uuidv4 } from 'uuid';
 
-// Set up worker
-// In a real Next.js app, you might need to host the worker file or use a CDN
-// For simplicity in this environment, we'll try to set it up via CDN
-if (typeof window !== 'undefined' && !pdfjs.GlobalWorkerOptions.workerSrc) {
-  pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
-}
-
 export async function renderPdfPages(file: File): Promise<SplitPdfPage[]> {
+  // Dynamically import pdfjs to avoid SSR issues
+  const pdfjs = await import('pdfjs-dist');
+  
+  // Set up worker
+  if (typeof window !== 'undefined' && !pdfjs.GlobalWorkerOptions.workerSrc) {
+    pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
+  }
+
   const arrayBuffer = await file.arrayBuffer();
   const loadingTask = pdfjs.getDocument({ data: arrayBuffer });
   const pdf = await loadingTask.promise;
@@ -29,6 +29,8 @@ export async function renderPdfPages(file: File): Promise<SplitPdfPage[]> {
     await page.render({
       canvasContext: context,
       viewport: viewport,
+      // @ts-ignore
+      canvas: canvas,
     }).promise;
 
     const previewUrl = canvas.toDataURL('image/jpeg', 0.8);

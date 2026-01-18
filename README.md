@@ -30,7 +30,7 @@ Most "free" PDF converters on the web require you to upload your sensitive docum
 
 ## 🛠️ Built With
 
-- **Framework**: [Next.js 15](https://nextjs.org/) (App Router)
+- **Framework**: [Next.js 15](https://nextjs.org/) 
 - **Styling**: [Tailwind CSS 4](https://tailwindcss.com/)
 - **PDF Engine**: [pdf-lib](https://pdf-lib.js.org/) & [pdfjs-dist](https://mozilla.github.io/pdf.js/)
 - **State**: [Zustand](https://github.com/pmndrs/zustand)
@@ -53,11 +53,8 @@ Want to run it yourself?
    npm run dev
    ```
 
-3. **Build for Production**
-   ```bash
-   npm run build
-   npm start
-   ```
+3. **Enjoy! :)**
+
 
 ## 📝 How it works 
 
